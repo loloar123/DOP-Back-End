@@ -45,16 +45,19 @@ router.post("/", auth, async (req, res) => {
     console.log(req.body);
     
   let validateBody = validateOrder(req.body);
+  console.log('reached1');
+  
   if (validateBody.error) {
     return res.status(400).json(validateBody.error.details);
   }
   try {
     let order = new OrderModel(req.body);
     let user = await UserModel.findOne({ _id: req.tokenData._id });
-
+    console.log('reached2');
+    
     order.name = user.name;
     order.user_id = user._id;
-
+    
     // לא לשמור בטוקן את המספר טלפון ולא כתובת, לשלןף דרך היוזר איי די את המידע הרגיש של המשתמש
     // להתמש דרך היוזר איי די
     if (order.phone == "" || order.phone == null) {
@@ -66,11 +69,17 @@ router.post("/", auth, async (req, res) => {
     if (order.address == "" || order.address == null) {
       order.address = user.address;
     }
+    console.log('reached3');
     order.products_ar = user.cart;
     order.delivery_msg = req.body.delivery_msg;
     order.order_price = req.body.order_price;
     await order.save();
     await UserModel.updateOne({ _id: user._id }, { cart: [] });
+    await UserModel.updateOne({ _id: user._id }, { newProductsInCart: 0 });
+    user.newProductsInCart = 0;
+    console.log(user.newProductsInCart);
+    console.log(user);
+    
     await user.save();
     res.json(order);
   } catch (err) {
