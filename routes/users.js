@@ -197,6 +197,40 @@ router.post("/login", async (req, res) => {
   // לשלוח טוקן
 });
 
+// users/loginGoogle
+router.post("/loginGoogle", async (req, res) => {
+  try {
+    //  אם בכלל קיים סאב שנשלח בבאדי במסד
+    console.log(req.body);
+    
+    let user = await UserModel.findOne({ googleSub: req.body.sub });
+    console.log(req.body.sub);
+    if (!user) {
+      return res.status(401).json({ msg: "עליך למלא פרטים נוספים על מנת להתחבר עם גוגל" });
+    }
+    if (user === null) {
+      return res.status(401).json({ msg: "עליך למלא פרטים נוספים על מנת להתחבר עם גוגל" });
+    }
+
+    // token -> אם השם של המאפיין זהה לשם של משתנה או פרמטר בבלוק של פונקציה
+    // אין צורך לעשות נקודתיים ולכתוב אותו שוב shorhad props object
+    let token = createToken(user._id, user.role);
+    // res.json({token:token})
+
+    // sending the user as well in order to recive hes values
+    // user.password = undefined;
+    // res.json({user,token})
+
+    res.json({ token });
+    // res.json({msg:"Success, need to send you token later"})
+  } catch (err) {
+    console.log(err);
+    res.status(502).json({ msg: "There problem, come back later" });
+  }
+
+  // לשלוח טוקן
+});
+
 router.put("/cart/:productId", auth, async (req, res) => {
   try {
     let productId = req.params.productId;
@@ -297,6 +331,20 @@ router.put("/profile", auth, async (req, res) => {
     res.status(502).json({ err });
   }
 });
+
+router.put("/darkmode", auth, async (req, res) => {
+  try {
+    let changeProfile = await UserModel.updateOne(
+      { _id: req.tokenData._id },
+      { darkMode: req.body.isDarkMode }
+    );
+    res.json(changeProfile);
+  } catch (err) {
+    console.log(err);
+    res.status(502).json({ err });
+  }
+});
+
 router.put("/profile/reset", auth, async (req, res) => {
   try {
     let changeProfile = await UserModel.updateOne(
@@ -328,7 +376,7 @@ router.put("/product/:_id/:upOrDown", auth, async (req, res) => {
 
     await UserModel.updateOne({ _id: user._id }, user);
     await user.save();
-    
+
     res.status(201).json(user.cart[index].amount_product);
   } catch (err) {
     console.log(err);

@@ -8,7 +8,8 @@ product_price:Number,
 amount_product: { type:Number , default:1},
 info:String,
 category:String,// category collection
-inMenu:Boolean
+inMenu:Boolean,
+newProductDate: {type: Date , default: new Date(new Date().setDate(new Date().getDate() + 30))}
 }, {versionKey:false})
 exports.ProductModel = mongoose.model("products",schema)
 
@@ -21,6 +22,7 @@ amount_product:Joi.number(),
 category:Joi.string().allow(null,''),
 info:Joi.string().min(1).max(999).required(),
 inMenu:Joi.boolean().required(),
+
 })
 return joiSchema.validate(_reqBody)
 }

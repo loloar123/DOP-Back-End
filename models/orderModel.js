@@ -13,6 +13,7 @@ const orderSchema = new mongoose.Schema(
     isPresent: { type: Boolean, default: false },
     delivery_msg: String,
     phone: String,
+    order_price: Number,
     order_date: { type: Date, default: Date.now() },
     status: { type: String, default: "ממתין לאישור" },
   },
@@ -29,6 +30,7 @@ exports.validateOrder = (_reqBody) => {
     isPresent: Joi.boolean().required(),
     delivery_msg: Joi.string().min(10).max(500).allow(null, ""),
     phone: Joi.string().allow(null, ""),
+    order_price:Joi.number(),
   });
   return joiSchema.validate(_reqBody);
 };

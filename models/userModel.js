@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   city:String,
   address:String,
   phone:String,
+  googleSub:String,
   role: { type: String, default: "user" },
   date_created: {
     type: Date,
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  darkMode:{type:Boolean , default:true},
 },{versionKey:false});
 
 exports.UserModel = mongoose.model("users", userSchema);
@@ -49,6 +51,8 @@ exports.validateUser = (_reqBody) => {
     dob: Joi.string().min(9).max(10).required(),
     // email -> בודק שהכתובת נראת הגיונית
     email: Joi.string().min(2).max(150).email().required(),
+    googleSub: Joi.string(),
+    profile_img: Joi.string(),
     password: Joi.string().min(3).max(150).required(),
     city:Joi.string().min(3).max(150).required(),
     address:Joi.string().min(3).max(999).required(),
