@@ -288,6 +288,26 @@ router.put("/productNum/:upOrDown", auth, async (req, res) => {
   }
 });
 
+router.put("/google", auth, async (req, res) => {
+  console.log(req.body);
+  
+  try{
+    let user = await UserModel.findOne({_id:req.tokenData._id});
+    let userSub = await UserModel.updateOne(
+      { _id: user._id },
+      { googleSub: req.body.sub }
+    ).updateOne({ _id: user._id },
+      { profile_img: req.body.picture });
+    // user.profile_img = req.body.picture;
+    
+    return res.json(userSub);
+  }
+  catch(err){
+    console.log(err);
+    res.status(502).json({err})
+  }
+});
+
 router.delete("/product/all", auth, async (req, res) => {
   try {
     let user = await UserModel.findOne({ _id: req.tokenData._id });

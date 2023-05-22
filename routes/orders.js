@@ -41,6 +41,7 @@ router.patch("/status/:id", authAdmin, async (req, res) => {
   }
 });
 
+
 router.post("/", auth, async (req, res) => {
     console.log(req.body);
     
@@ -87,6 +88,8 @@ router.post("/", auth, async (req, res) => {
     res.status(502).json(err);
   }
 });
+
+
 
 router.delete("/:idDel", async (req, res) => {
   try {
