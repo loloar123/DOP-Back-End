@@ -15,10 +15,21 @@ router.get("/", authAdmin, async (req, res) => {
     res.status(502).json({ err });
   }
 });
+
+router.get("/single/:id", auth , async (req, res) => {
+  let orderId = req.params.id;
+  try {
+    let orders = await OrderModel.findOne({_id:orderId});
+    res.json(orders);
+  } catch (err) {
+    console.log(err);
+    res.status(502).json({ err });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   let userId = req.params.id;
   try {
-    // let mainData = await OrderModel.find({});
     let data = await OrderModel.find({ user_id: userId });
     res.json(data);
   } catch (err) {

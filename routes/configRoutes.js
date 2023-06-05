@@ -6,6 +6,7 @@ const productsR = require("./products");
 const uploadsR = require("./uploads");
 const updatesR = require("./updates");
 const resetsR = require("./resetPassword");
+const eventsR = require("./events");
 
 
 exports.routesInit = (app) => {
@@ -17,4 +18,5 @@ exports.routesInit = (app) => {
   app.use("/uploads",uploadsR);
   app.use("/updates",updatesR);
   app.use("/resetPassword",resetsR);
+  app.use("/events",eventsR);
 }
