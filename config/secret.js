@@ -1,5 +1,5 @@
 require("dotenv").config();
-console.log(process.env.USER_DB);
+// console.log(process.env.USER_DB);
 
 // כל המשתנים שצריכים להיות סודיים יהיו בקובץ הזה
 exports.config = {
