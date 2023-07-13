@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
 
   try {
     const user = await UserModel.findOne({ email });
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
@@ -30,15 +30,15 @@ router.post("/", async (req, res) => {
       secure: false,
       auth: {
         user: "drinkorderpartyweb@gmail.com",
-        pass: "ltrolxqwyuycxzch",
+        pass: "dqawfnbimamqtmku",
       },
     });
-
+    
     const mailOptions = {
       from: "drinkorderparty@gmail.com",
       to: email,
       subject: "DOP - Reset Password",
-      text: `היי לבקשתך לשינוי סיסמא שלחנו את האימייל הזה, במידה ולא אתה ביקשת לשנות את הסיסמא אתה יכול להתעלם: http://localhost:3000/reset-password/${resetPasswordToken}`,
+      text: `היי לבקשתך לשינוי סיסמא שלחנו את האימייל הזה, במידה ולא אתה ביקשת לשנות את הסיסמא אתה יכול להתעלם: https://drink-web.netlify.app/reset-password/${resetPasswordToken}`,
       //   ${process.env.CLIENT_URL}
     };
     
